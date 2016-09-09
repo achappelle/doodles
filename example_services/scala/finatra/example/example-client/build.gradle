@@ -1,0 +1,18 @@
+apply plugin: 'scala'
+//apply plugin: 'library'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://maven.twttr.com" }
+}
+
+dependencies {
+    compile "org.scala-lang:scala-library:$scalaVersion"
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+    compile "com.twitter:util-core_2.11:$finatraVersion"
+    compile "com.twitter:finatra-httpclient_2.11:$finatraVersion"
+}

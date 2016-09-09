@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}
+
+mainClassName = 'com.me.example.service.ExampleService'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.sparkjava:spark-core:latest.release"
+    compile "ch.qos.logback:logback-classic:latest.release"
+    compile "com.fasterxml.jackson.core:jackson-databind:latest.release"
+    compile "com.fasterxml.jackson.core:jackson-core:latest.release"
+    compile "com.sparkjava:spark-debug-tools:latest.release"
+
+    testCompile "junit:junit:latest.release"
+    testCompile "com.sparkjava:spark-core:latest.release"
+}
+
+run {
+}
+
+test {
+    outputs.upToDateWhen { false }
+    // testLogging { showStandardStreams = true }
+    afterTest { desc, result ->
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+}

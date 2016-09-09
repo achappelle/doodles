@@ -1,0 +1,62 @@
+apply plugin: 'scala'
+apply plugin: 'application'
+//apply plugin: 'idea'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}
+
+mainClassName = 'com.me.example.service.ExampleServerMain'
+
+repositories {
+    mavenCentral()
+    maven { url "http://maven.twttr.com" }
+}
+
+dependencies {
+    compile project(':example-persistence')
+
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+    compile "com.netflix.archaius:archaius-scala:latest.release"
+    compile "com.twitter:finatra-http_2.11:$finatraVersion"
+    compile "org.scala-lang:scala-library:$scalaVersion"
+
+    testCompile "com.twitter:finatra-http_2.11:$finatraVersion"
+    testCompile "com.twitter:finatra-http_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:finatra-jackson_2.11:$finatraVersion"
+    testCompile "com.twitter:finatra-jackson_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:finatra-httpclient_2.11:$finatraVersion"
+    testCompile "com.twitter:finatra-httpclient_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-server_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-server_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-app_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-app_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-core_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-core_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-modules_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-modules_2.11:$finatraVersion:tests"
+
+    testCompile "com.google.inject.extensions:guice-testlib:$guiceVersion"
+    testCompile "junit:junit:latest.release"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "org.scalatest:scalatest_2.11:$scalatestVersion"
+    testCompile "org.specs2:specs2_2.11:$specs2Version"
+}
+
+run {
+   // systemProperty "archaius.configurationSource.defaultFileName", "example.properties"
+    systemProperty "archaius.deployment.applicationId", "example"
+    systemProperty "archaius.deployment.environment", "prod"
+    systemProperty "archaius.deployment.datacenter", "dc1"
+    //systemProperty "archaius.configurationSource.additionalUrls", "example.properties,example-prod.properties,example-prod-dc1.properites"
+}
+
+test {
+    outputs.upToDateWhen { false }
+
+    afterTest { desc, result ->
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+}

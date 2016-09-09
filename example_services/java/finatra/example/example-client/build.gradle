@@ -1,0 +1,15 @@
+apply plugin: 'java'
+//apply plugin: 'idea'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.twitter:finatra-http_2.11:$finatraVersion"
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+}

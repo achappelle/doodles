@@ -1,0 +1,50 @@
+apply plugin: 'java'
+apply plugin: 'application'
+//apply plugin: 'idea'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}
+
+mainClassName = 'com.me.example.service.ExampleServerMain'
+
+repositories {
+    mavenCentral()
+    maven { url "http://maven.twttr.com" }
+}
+
+dependencies {
+    compile project(':example-persistence')
+
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+    compile "com.twitter:finatra-http_2.11:$finatraVersion"
+    compile "com.twitter:finatra-httpclient_2.11:$finatraVersion"
+    compile "com.twitter:finatra-slf4j_2.11:$finatraVersion"
+    compile "com.twitter:inject-core_2.11:$finatraVersion"
+    compile "com.twitter:inject-server_2.11:$finatraVersion"
+    //compile 'com.google.inject:guice:latest.release'
+
+    testCompile "com.twitter:finatra-http_2.11:$finatraVersion"
+    testCompile "com.twitter:finatra-httpclient_2.11:$finatraVersion"
+    testCompile "com.twitter:finatra-http_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-server_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-server_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-app_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-app_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-core_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-core_2.11:$finatraVersion:tests"
+    testCompile "com.twitter:inject-modules_2.11:$finatraVersion"
+    testCompile "com.twitter:inject-modules_2.11:$finatraVersion:tests"
+    testCompile 'junit:junit:latest.release'
+    testCompile "org.scalatest:scalatest_2.11:$scalatestVersion"
+}
+
+test {
+    outputs.upToDateWhen { false }
+
+    afterTest { desc, result ->
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+apply plugin: 'java'
+//apply plugin: 'idea'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+    compile 'javax.inject:javax.inject:latest.release'
+}
