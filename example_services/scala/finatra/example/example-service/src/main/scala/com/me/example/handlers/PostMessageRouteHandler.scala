@@ -7,10 +7,10 @@ import com.me.example.persistence.MessageDao
 import com.twitter.inject.Logging
 import com.twitter.util.Future
 
-class PostMessageHandler @Inject()(
+class PostMessageRouteHandler @Inject()(
   dao: MessageDao,
   request: PostMessageRequest
-) extends RequestHandler
+) extends RouteHandler
   with Logging {
 
   override def handle(): Future[Any] = {

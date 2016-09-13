@@ -22,13 +22,13 @@ class ExampleController @Inject()(dao: MessageDao)
 
   get("/message/:id") { request: GetMessageRequest =>
     info(s"Some String Property=${someStringProperty.get}")
-    new GetMessageHandler(dao, request).handle().map {
+    new GetMessageRouteHandler(dao, request).handle().map {
         case Some(value) => value
         case None => response.notFound(s"No Value for key=${request.id}")
     }
   }
 
   post("/message/:id") { request: PostMessageRequest =>
-    new PostMessageHandler(dao, request).handle()
+    new PostMessageRouteHandler(dao, request).handle()
   }
 }

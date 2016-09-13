@@ -11,12 +11,12 @@ import java.util.List;
 
 import static spark.Spark.*;
 
-public class ServiceInitializer {
-    public static void setupThreads(ServiceConfig config) {
+class ServiceInitializer {
+    private static void setupThreads(ServiceConfig config) {
         threadPool(config.maxThreads, config.minThreads, config.timeoutMillis);
     }
 
-    public static void setupRedirects(List<String> oldRootPaths, String curRootPath) {
+    private static void setupRedirects(List<String> oldRootPaths, String curRootPath) {
         // redirecting old API's to our new ones
         for(String oldRootPath : oldRootPaths){
             redirect.get(oldRootPath + "/message/:id", curRootPath + "/message/:id");
@@ -24,29 +24,29 @@ public class ServiceInitializer {
     }
 
     // all the routes
-    public static void setupRoutes(String rootPath, DaoMaker daoMaker) {
+    private static void setupRoutes(String rootPath, DaoMaker daoMaker) {
         get("/ping", (request, response) -> "OK");
         get(rootPath + "/message/" + GetMessageRouteHandler.MessageIdParamKey, new GetMessageRouteHandler(daoMaker));
         post(rootPath + "/message/" + PostMessageRouteHandler.MessageIdParamKey, new PostMessageRouteHandler(daoMaker));
 
-        // "spatting" get("/message/*/something/*" ... puts spats in req.splat()[0]...
+        // "splatting" get("/message/*/something/*" ... puts splats in req.splat()[0]...
         // support for multipart uploads, e.g. file uploads
         // support for different template engines: Velocity, FreeMaker, Mustache, etc...
         // support for websockets
     }
 
     // Upstream request filters
-    public static void setupBeforeFilters() {
+    private static void setupBeforeFilters() {
         before(new AuthenticationFilter());
     }
 
     // Downstream response filters
-    public static void setupAfterFilters(String rootPath) {
+    private static void setupAfterFilters(String rootPath) {
         // turns on gzip compression on if the request also allows it
         after(rootPath + "/message/:id", (request, response) -> response.header("Content-Encoding", "gzip"));
     }
 
-    public static void setupExceptionHandlers() {
+    private static void setupExceptionHandlers() {
         // registering custom exception handling
         exception(CustomException.class, (exception, request, response) -> {
             // set the response status

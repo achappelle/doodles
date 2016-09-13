@@ -6,10 +6,10 @@ import com.me.example.domain.http.GetMessageRequest
 import com.me.example.persistence.MessageDao
 import com.twitter.util.Future
 
-class GetMessageHandler @Inject()(
+class GetMessageRouteHandler @Inject()(
   dao: MessageDao,
   request: GetMessageRequest
-) extends RequestHandler {
+) extends RouteHandler {
 
   override def handle(): Future[Any] = {
     dao.get(request.id)

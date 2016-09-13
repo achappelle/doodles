@@ -2,7 +2,7 @@ package com.me.example.handlers
 
 import com.twitter.util.Future
 
-trait RequestHandler {
+trait RouteHandler {
   def handle(): Future[Any]
 }
 
